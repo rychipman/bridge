@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title>Bridge Bidder</title>
+        <link href="/static/css/style.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        {{template "pastbids.tmpl" .Bids}}
+        {{template "hand.tmpl" .Hand}}
+        {{template "nextbid.tmpl" .Bids}}
+    </body>
+</html>
