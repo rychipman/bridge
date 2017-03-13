@@ -38,8 +38,10 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 			Diamonds: "AKQJ",
 			Clubs:    "AKQJ",
 		},
-		Bids: []string{
-			"1H", "2C", "P", "2S", "P", "3NT",
+		Bids: []*Bid{
+			&Bid{"South", "Pass"},
+			&Bid{"West", "1H"},
+			&Bid{"North", "1S"},
 		},
 	}
 
@@ -49,7 +51,7 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 
 type Ctx struct {
 	Hand *Hand
-	Bids []string
+	Bids []*Bid
 }
 
 type Hand struct {
@@ -57,4 +59,9 @@ type Hand struct {
 	Hearts   string
 	Diamonds string
 	Clubs    string
+}
+
+type Bid struct {
+	Seat     string
+	Contract string
 }

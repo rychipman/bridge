@@ -1,3 +1,14 @@
 <div id="past-bids">
-    Bids:{{range .}} {{.}},{{end}}
+    <table>
+        <tr>
+            {{ range . }}
+            <th>{{ .Seat }}</th>
+            {{ end }}
+        </tr>
+        <tr>
+            {{ range . }}
+            <td>{{ .Contract }}</td>
+            {{ end }}
+        </tr>
+    </table>
 </div>
