@@ -1,62 +1,52 @@
 
 window.onload = function() {
 
-    var SetCard = {
+    var Card = {
         view: function(vnode) {
-            set = vnode.attrs.set;
             cardClasses = classNames(
-                'set-tile', 'animate',
+                'set-tile',
                 'mdl-card',
                 'mdl-cell', 'mdl-cell--4-col',
                 'mdl-color--white', 'mdl-color-text--grey-600',
                 'mdl-shadow--4dp',
-                {'disabled': set.disabled},
+                {'disabled': vnode.attrs.disabled},
             );
             return m('div', {
-                key: set.id,
+                key: vnode.attrs.key,
                 class: cardClasses,
             }, [
                 m('h2.mdl-card__title.mdl-card--expand.mdl-color-text--grey-700',
-                    set.name + set.id
+                    vnode.attrs.title,
                 ),
-                m('.mdl-card__actions', [
-                    m('.mdl-button.mdl-button--icon',
-                        m('i.material-icons', 'share')
-                    ),
-                    m('.mdl-button.mdl-button--icon',
-                        m('i.material-icons', 'delete')
-                    ),
-                ]),
+                m('.mdl-card__actions', vnode.attrs.icons.map(function(icon) {
+                    return m('.mdl-button.mdl-button--icon',
+                        m('i.material-icons', icon),
+                    );
+                })),
             ]);
-        }
-    }
+        },
+    };
+
+    var SetCard = {
+        view: function(vnode) {
+            set = vnode.attrs.set;
+            return m(Card, {
+                disabled: set.disabled,
+                title: set.name,
+                key: set.id,
+                icons: ['share', 'delete'],
+            });
+        },
+    };
 
     var NewSetCard = {
         view: function(vnode) {
-            cardClasses = classNames(
-                'set-tile', 'animate',
-                'mdl-card',
-                'mdl-cell', 'mdl-cell--4-col',
-                'mdl-color--teal', 'mdl-color-text--white',
-                'mdl-shadow--4dp',
-            );
-            return m('div', {
-                class: cardClasses,
-            }, [
-                m('h2.mdl-card__title.mdl-card--expand.mdl-color-text--grey-700',
-                    'Add New Set',
-                ),
-                m('.mdl-card__actions', [
-                    m('.mdl-button.mdl-button--icon',
-                        m('i.material-icons', 'more')
-                    ),
-                    m('.mdl-button.mdl-button--icon',
-                        m('i.material-icons', 'add')
-                    ),
-                ]),
-            ]);
+            return m(Card, {
+                title: 'Add New Set',
+                icons: ['more', 'add', 'star'],
+            });
         },
-    }
+    };
 
     var Header = {
         view: function(vnode) {
