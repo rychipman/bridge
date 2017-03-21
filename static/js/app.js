@@ -4,7 +4,7 @@ window.onload = function() {
     var Card = {
         view: function(vnode) {
             cardClasses = classNames(
-                'set-tile',
+                'card',
                 'mdl-card',
                 'mdl-cell', 'mdl-cell--4-col',
                 'mdl-color--white', 'mdl-color-text--grey-600',
@@ -59,17 +59,63 @@ window.onload = function() {
     };
 
     var Drawer = {
-        view: function(vnode) {
-            return m('.mdl-layout__drawer.mdl-color--blue-grey-900.mdl-color-text--blue-grey-50', [
-                m('header.drawer-header', [
-                    m('span.mdl-layout-title', 'Title'),
-                ]),
-                m('nav.mdl-navigation.mdl-color--blue-grey-800', [
-                    m('a.mdl-navigation__link', 'a link'),
-                    m('a.mdl-navigation__link', 'a link'),
-                ]),
-            ]);
+        links: [
+            ['home', 'Home'],
+            ['inbox', 'Inbox'],
+            ['delete', 'Trash'],
+            ['refresh', 'Refresh',
+                function() {
+                    console.log('click');
+                    m.request({
+                        url: 'http://localhost:8080/api',
+                        method: 'GET',
+                    }).then(function(res) {
+                        console.log(res);
+                        vnode.state.sets = res;
+                    });
+                },
+            ],
+        ],
 
+        view: function(vnode) {
+
+            var drawerClasses = classNames(
+                'drawer',
+                'mdl-layout__drawer',
+                'mdl-color--blue-grey-900', 'mdl-color-text--blue-grey-50',
+            );
+            var navClasses = classNames(
+                'drawer-nav',
+                'mdl-navigation',
+                'mdl-color--blue-grey-800',
+            );
+            var linkClasses = classNames(
+                'drawer-nav-link',
+                'mdl-navigation__link',
+            );
+            var iconClasses = classNames(
+                'drawer-nav-icon',
+                'material-icons',
+            );
+
+            return m('div', {class: drawerClasses}, [
+                m('header.drawer-header', [
+                    m('span.mdl-layout-title', 'Bridge the Gap'),
+                ]),
+                m('nav', {class: navClasses},
+                    vnode.state.links.map(function(row) {
+                        return m('a', { class: linkClasses, onclick: row[2] },
+                            m('i', {class: iconClasses}, row[0]),
+                            row[1],
+                        );
+                    }),
+                    m('.mdl-layout-spacer'),
+                    m('a', { class: linkClasses },
+                        m('i', {class: iconClasses}, 'info'),
+                        'Info',
+                    ),
+                ),
+            ]);
 
         },
     };
@@ -86,20 +132,19 @@ window.onload = function() {
         },
 
         view: function(vnode) {
-            return m('main.mdl-layout__content.mdl-color--grey-100', [
-                m('button.poll.mdl-button.mdl-button--raised', {
-                    disabled: false,
-                    onclick: function() {
-                        m.request({
-                            url: 'http://localhost:8080/api',
-                            method: 'GET',
-                        }).then(function(res) {
-                            console.log(res);
-                            vnode.state.sets = res;
-                        });
-                    },
-                }, 'Poll'),
-                m('.set-grid.mdl-grid',
+
+            var mainClasses = classNames(
+                'main-content',
+                'mdl-layout__content',
+                'mdl-color--grey-100',
+            )
+            var gridClasses = classNames(
+                'main-grid',
+                'mdl-grid',
+            )
+
+            return m('main', {class: mainClasses}, [
+                m('div', {class: gridClasses},
                     vnode.state.data().map(function(set) {
                         return m(SetCard, {set: set});
                     }),
