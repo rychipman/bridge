@@ -52,8 +52,9 @@ window.onload = function() {
         view: function(vnode) {
             return m('header.mdl-layout__header.mdl-color--grey-100.mdl-color-text--grey-600',
                 m('.mdl-layout__header-row',
-                    m('.mdl-layout-spacer')
-                )
+                    m('span.mdl-layout-title', 'Home'),
+                    m('.mdl-layout-spacer'),
+                ),
             );
         },
     };
@@ -156,10 +157,20 @@ window.onload = function() {
     };
 
     var Layout = {
+
+        oncreate: function(vnode) {
+            componentHandler.upgradeElement(vnode.dom);
+        },
+
+        onupdate: function(vnode) {
+            componentHandler.upgradeElement(vnode.dom);
+        },
+
         view: function(vnode) {
             var layoutClasses = classNames(
                 'dashboard',
-                'mdl-layout', 'mdl-layout--fixed-drawer', 'mdl-layout--fixed-header',
+                'mdl-layout', 'mdl-js-layout',
+                'mdl-layout--fixed-drawer', 'mdl-layout--fixed-header',
             )
             return m('div', {
                 class: layoutClasses,

@@ -8,6 +8,18 @@ body {
     max-width: 1080px;
 }
 
+.dashboard > header > .mdl-layout__drawer-button {
+    color: rgba(0, 0, 0, 0.54);
+    font-family: Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.drawer {
+    border: none;
+}
+
 .drawer > .drawer-header {
     display: flex;
     height: 150px;
