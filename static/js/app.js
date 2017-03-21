@@ -1,36 +1,62 @@
 
 window.onload = function() {
 
-    var SetGrid = {
+    var SetCard = {
         view: function(vnode) {
-            return m('.set-grid.mdl-grid', vnode.attrs.sets.map(function(set) {
-                cardClasses = classNames(
-                    'set-tile', 'animate',
-                    'mdl-card',
-                    'mdl-cell', 'mdl-cell--4-col',
-                    'mdl-color--white', 'mdl-color-text--grey-600',
-                    'mdl-shadow--4dp',
-                    {'disabled': set.disabled},
-                );
-                return m('div', {
-                    key: set.id,
-                    class: cardClasses,
-                }, [
-                    m('h2.mdl-card__title.mdl-card--expand.mdl-color-text--grey-700',
-                        set.name + set.id
+            set = vnode.attrs.set;
+            cardClasses = classNames(
+                'set-tile', 'animate',
+                'mdl-card',
+                'mdl-cell', 'mdl-cell--4-col',
+                'mdl-color--white', 'mdl-color-text--grey-600',
+                'mdl-shadow--4dp',
+                {'disabled': set.disabled},
+            );
+            return m('div', {
+                key: set.id,
+                class: cardClasses,
+            }, [
+                m('h2.mdl-card__title.mdl-card--expand.mdl-color-text--grey-700',
+                    set.name + set.id
+                ),
+                m('.mdl-card__actions', [
+                    m('.mdl-button.mdl-button--icon',
+                        m('i.material-icons', 'share')
                     ),
-                    m('.mdl-card__actions', [
-                        m('.mdl-button.mdl-button--icon',
-                            m('i.material-icons', 'share')
-                        ),
-                        m('.mdl-button.mdl-button--icon',
-                            m('i.material-icons', 'delete')
-                        ),
-                    ]),
-                ]);
-            }));
+                    m('.mdl-button.mdl-button--icon',
+                        m('i.material-icons', 'delete')
+                    ),
+                ]),
+            ]);
+        }
+    }
+
+    var NewSetCard = {
+        view: function(vnode) {
+            cardClasses = classNames(
+                'set-tile', 'animate',
+                'mdl-card',
+                'mdl-cell', 'mdl-cell--4-col',
+                'mdl-color--teal', 'mdl-color-text--white',
+                'mdl-shadow--4dp',
+            );
+            return m('div', {
+                class: cardClasses,
+            }, [
+                m('h2.mdl-card__title.mdl-card--expand.mdl-color-text--grey-700',
+                    'Add New Set',
+                ),
+                m('.mdl-card__actions', [
+                    m('.mdl-button.mdl-button--icon',
+                        m('i.material-icons', 'more')
+                    ),
+                    m('.mdl-button.mdl-button--icon',
+                        m('i.material-icons', 'add')
+                    ),
+                ]),
+            ]);
         },
-    };
+    }
 
     var Header = {
         view: function(vnode) {
@@ -53,6 +79,8 @@ window.onload = function() {
                     m('a.mdl-navigation__link', 'a link'),
                 ]),
             ]);
+
+
         },
     };
 
@@ -69,7 +97,8 @@ window.onload = function() {
 
         view: function(vnode) {
             return m('main.mdl-layout__content.mdl-color--grey-100', [
-                m('button.poll', {
+                m('button.poll.mdl-button.mdl-button--raised', {
+                    disabled: false,
                     onclick: function() {
                         m.request({
                             url: 'http://localhost:8080/api',
@@ -80,8 +109,14 @@ window.onload = function() {
                         });
                     },
                 }, 'Poll'),
-                m(SetGrid, {sets: vnode.state.data()}),
+                m('.set-grid.mdl-grid',
+                    vnode.state.data().map(function(set) {
+                        return m(SetCard, {set: set});
+                    }),
+                    m(NewSetCard),
+                ),
             ]);
+
         },
     };
 
