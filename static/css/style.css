@@ -1,0 +1,35 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900);
+
+.set-grid.mdl-grid {
+    max-width: 1000px;
+}
+
+.set-tile {
+    background: #3E4EB8;
+}
+
+.set-tile.disabled {
+    background: #8895A5;
+}
+
+.set-tile:not(.disabled):hover {
+    background: #203E98;
+}
+
+.set-tile > .mdl-card__actions {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.set-tile > .mdl-card__title {
+  align-items: flex-start;
+}
+.set-tile > .mdl-card__title > h4 {
+  margin-top: 0;
+}
+.set-tile > .mdl-card__actions {
+  display: flex;
+  box-sizing:border-box;
+  align-items: center;
+}
+.set-tile > .mdl-card__actions > .material-icons {
+  padding-right: 10px;
+}

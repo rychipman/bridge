@@ -2,8 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -75,7 +74,7 @@ type User struct {
 
 type Set struct {
 	Criteria string
-	Deals    []*Deal
+	//Deals    []*Deal
 }
 
 type Table struct {
@@ -103,25 +102,69 @@ type Hand struct {
 var users []*User
 
 func main() {
+	http.HandleFunc("/", DefaultHandler)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.HandleFunc("/api/", APIHandler)
+
 	router := mux.NewRouter()
-	router.HandleFunc("/", DefaultHandler).Methods("GET")
 	router.HandleFunc("/home", HomeHandler).Methods("GET")
 	router.HandleFunc("/bid", BidHandler).Methods("GET")
 	router.HandleFunc("/set/{id}", SetHandler).Methods("GET")
 	router.HandleFunc("/deal/{id}", DealHandler).Methods("GET")
 	router.HandleFunc("/user/{username}", UserHandler).Methods("GET")
 	router.HandleFunc("/register", RegisterHandler).Methods("POST")
-	http.ListenAndServe(":8080", router)
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func handleApi(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("a;sdklfjas;kdfj")
-	res := []byte("This is my response")
-	w.Write(res)
+func DefaultHandler(w http.ResponseWriter, req *http.Request) {
+	log.Printf("%+v\n", req)
+	indexPage := `
+<html>
+	<head>
+		<title>Bridge the Gap</title>
+		<link href='/static/css/vendor/material.css' rel='stylesheet'>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link href='/static/css/style.css' rel='stylesheet'>
+	</head>
+	<body>
+		<script src='/static/js/vendor/material.js'></script>
+		<script src='/static/js/vendor/mithril.js'></script>
+		<script src='/static/js/vendor/classnames.js'></script>
+		<script src='/static/js/app.js'></script>
+	</body>
+</html>
+`
+	//<script data-main='/static/js/app' src='/static/js/vendor/require.js'></script>
+	w.Write([]byte(indexPage))
 }
 
-func DefaultHandler(w http.ResponseWriter, r *http.Request) {
-	// TODO
+type testSet struct {
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Disabled bool   `json:"disabled"`
+}
+
+var testSets = []*testSet{
+	{1, "one", true},
+	{2, "two", true},
+	{1, "one", false},
+	{3, "three", false},
+	{2, "two", false},
+}
+
+var oneTwoLast = false
+
+func APIHandler(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	if oneTwoLast {
+		json.NewEncoder(w).Encode(testSets[2:])
+		oneTwoLast = false
+	} else {
+		json.NewEncoder(w).Encode(testSets[0:2])
+		oneTwoLast = true
+	}
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -140,10 +183,10 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&User{})
 }
 
-func RegisterHandler(w http.ResponseWriter, r *http.Request) {
+func RegisterHandler(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(req.Body)
 	defer req.Body.Close()
 
 	user := new(User)
@@ -185,44 +228,5 @@ func DealHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRoot(w http.ResponseWriter, r *http.Request) {
-	files := []string{
-		"templates/index.tmpl",
-		"templates/hand.tmpl",
-		"templates/nextbid.tmpl",
-		"templates/pastbids.tmpl",
-	}
-
-	ctx := &Ctx{
-		Hand: &Hand{
-			Spades:   "AKQJT",
-			Hearts:   "AKQJ",
-			Diamonds: "AKQJ",
-			Clubs:    "AKQJ",
-		},
-		Bids: []*Bid{
-			&Bid{"South", "Pass"},
-			&Bid{"West", "1H"},
-			&Bid{"North", "1S"},
-		},
-	}
-
-	tmpl := template.Must(template.ParseFiles(files...))
-	tmpl.Execute(w, ctx)
-}
-
-type Ctx struct {
-	Hand *Hand
-	Bids []*Bid
-}
-
-type Hand struct {
-	Spades   string
-	Hearts   string
-	Diamonds string
-	Clubs    string
-}
-
-type Bid struct {
-	Seat     string
-	Contract string
+	// TODO
 }
