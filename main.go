@@ -129,14 +129,23 @@ func DefaultHandler(w http.ResponseWriter, req *http.Request) {
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 	</head>
 	<body>
-		<script src='/static/js/vendor/mithril.js'></script>
-		<script src='/static/js/vendor/classnames.js'></script>
-		<script src='/static/js/vendor/material.js'></script>
-		<script src='/static/js/app.js'></script>
+
+	    <script src='/static/js/vendor/mithril.js'></script>
+	    <script src='/static/js/vendor/classnames.js'></script>
+	    <script src='/static/js/vendor/material.js'></script>
+
+	    <script src='/static/js/components/card.js'></script>
+	    <script src='/static/js/components/drawer.js'></script>
+	    <script src='/static/js/components/grid.js'></script>
+	    <script src='/static/js/components/header.js'></script>
+	    <script src='/static/js/components/layout.js'></script>
+	    <script src='/static/js/components/setcard.js'></script>
+
+	    <script src='/static/js/app.js'></script>
+
 	</body>
 </html>
 `
-	//<script data-main='/static/js/app' src='/static/js/vendor/require.js'></script>
 	w.Write([]byte(indexPage))
 }
 
