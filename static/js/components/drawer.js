@@ -3,10 +3,11 @@
 
     Drawer = {
         links: [
-            ['home', 'Home'],
-            ['inbox', 'Inbox'],
-            ['delete', 'Trash'],
-            ['refresh', 'Refresh',
+            ['home', 'Home', '#!/'],
+            ['list', 'My Sets', '#!/sets/mine'],
+            ['play_arrow', 'Bid My Sets', '#!/sets/mine/active'],
+            ['schedule', 'Sets in Flight', '#!/sets/mine/waiting'],
+            ['refresh', 'Refresh', '',
                 function() {
                     console.log('click');
                     m.request({
@@ -43,19 +44,39 @@
 
             return m('div', {class: drawerClasses}, [
                 m('header.drawer-header', [
-                    m('span.mdl-layout-title', 'Bridge Bidding'),
+                    m('span.mdl-layout-title', 'rchipman'),
+                    m('.user-dropdown',
+                        m('span', 'username@example.com'),
+                        m('span.mdl-layout-spacer'),
+                        m('button#accbtn.mdl-button.mdl-js-button.mdl-button--icon',
+                            m('i.material-icons', 'arrow_drop_down'),
+                        ),
+                        m('ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu[for=accbtn]',
+                            m('li.mdl-menu__item', 'me@example.com'),
+                            m('li.mdl-menu__item', 'someone_else@example.com'),
+                            m('li.mdl-menu__item',
+                                m('i.material-icons', 'add'),
+                                'Add another account...',
+                            ),
+                        ),
+                    ),
                 ]),
                 m('nav', {class: navClasses},
                     vnode.state.links.map(function(row) {
-                        return m('a', { class: linkClasses, onclick: row[2] },
+                        return m('a',
+                            {
+                                class: linkClasses,
+                                href: row[2],
+                                onclick: row[3],
+                            },
                             m('i', {class: iconClasses}, row[0]),
                             row[1],
                         );
                     }),
                     m('.mdl-layout-spacer'),
                     m('a', { class: linkClasses },
-                        m('i', {class: iconClasses}, 'info'),
-                        'Info',
+                        m('i', {class: iconClasses}, 'help'),
+                        'Help',
                     ),
                 ),
             ]);

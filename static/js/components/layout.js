@@ -17,13 +17,11 @@
                 'mdl-layout', 'mdl-js-layout',
                 'mdl-layout--fixed-drawer', 'mdl-layout--fixed-header',
             )
-            return m('div', {
-                class: layoutClasses,
-            }, [
+            return m('div', { class: layoutClasses },
                 m(Header),
                 m(Drawer),
-                m(Grid),
-            ]);
+                vnode.children,
+            );
         },
 
     };
