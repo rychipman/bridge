@@ -1,7 +1,7 @@
 
 (function() {
 
-    Grid = {
+    Sets = {
 
         sets: [
             {id: 1, name: 'two', disabled: true},
@@ -14,25 +14,37 @@
 
         view: function(vnode) {
 
-            var mainClasses = classNames(
-                'main-content',
-                'mdl-layout__content',
-                'mdl-color--grey-100',
-            )
             var gridClasses = classNames(
                 'main-grid',
                 'mdl-grid',
-            )
+            );
 
-            return m('main', {class: mainClasses}, [
-                m('div', {class: gridClasses},
-                    vnode.state.data().map(function(set) {
-                        return m(SetCard, {set: set});
-                    }),
-                    m(NewSetCard),
-                ),
+            return m('div', {class: gridClasses}, [
+                vnode.state.data().map(function(set) {
+                    return m(SetCard, {set: set});
+                }),
+                m(NewSetCard),
             ]);
 
+        },
+    };
+
+    Login = {
+
+        view: function(vnode) {
+            var gridClasses = classNames(
+                'main-grid',
+                'mdl-grid',
+            );
+
+            return m('div', {class: gridClasses}, [
+                m('.mdl-layout-spacer'),
+                m(GiantCard, {
+                    title: 'Login',
+                    text: 'Submit',
+                },),
+                m('.mdl-layout-spacer'),
+            ]);
         },
     };
 

@@ -48,8 +48,9 @@
                     m('.user-dropdown',
                         m('span', 'username@example.com'),
                         m('span.mdl-layout-spacer'),
-                        m('button#accbtn.mdl-button.mdl-js-button.mdl-button--icon',
+                        m('button#accbtn.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-button--icon',
                             m('i.material-icons', 'arrow_drop_down'),
+                            m('span.visuallyhidden', 'Dropdown content')
                         ),
                         m('ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu[for=accbtn]',
                             m('li.mdl-menu__item', 'me@example.com'),
