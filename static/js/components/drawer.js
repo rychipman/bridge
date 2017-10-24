@@ -4,9 +4,9 @@
     Drawer = {
         links: [
             ['home', 'Home', '#!/'],
-            ['list', 'My Sets', '#!/sets/mine'],
-            ['play_arrow', 'Bid My Sets', '#!/sets/mine/active'],
-            ['schedule', 'Sets in Flight', '#!/sets/mine/waiting'],
+            ['play_arrow', 'Bid My Sets', '#!/sets/bid'],
+            ['list', 'Set Inbox', '#!/sets/mine/active'],
+            ['schedule', 'Not My Turn', '#!/sets/mine/waiting'],
             ['refresh', 'Refresh', '',
                 function() {
                     console.log('click');

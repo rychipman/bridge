@@ -18,7 +18,7 @@ window.onload = function() {
             },
         },
 
-        '/sets/mine': {
+        '/sets/mine/:filter': {
             render: function() {
                 return m(Layout, m(Sets));
             },

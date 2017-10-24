@@ -62,7 +62,13 @@
                     ]),
                 ]),
                 m('.mdl-card__actions.mdl-card--border', [
-                    m('a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect', vnode.attrs.text),
+                    m('a',
+                        {
+                            class: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
+                            onclick: Auth.login,
+                        },
+                        vnode.attrs.text
+                    ),
                 ]),
             ]);
         },
